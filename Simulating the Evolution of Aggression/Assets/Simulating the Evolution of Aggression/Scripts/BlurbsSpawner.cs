@@ -17,6 +17,9 @@ public class BlurbsSpawner : MonoBehaviour
             AddBlurb();
 
         SpawnBlurbsInCircle();
+
+        ChooseFood();
+        EatFood();
     }
 
     private void SpawnBlurbsInCircle()
@@ -35,7 +38,23 @@ public class BlurbsSpawner : MonoBehaviour
 
     public void AddBlurb()
     {
-        Blurb newBlurb = Instantiate(blurbPrefab, Vector3.zero, Quaternion.identity).GetComponent<Blurb>();
+        Blurb newBlurb = Instantiate(blurbPrefab, Vector3.zero, Quaternion.Euler(0, 180, 0)).GetComponent<Blurb>();
         blurbs.Add(newBlurb);
+    }
+
+    public void ChooseFood()
+    {
+        foreach(Blurb blurb in blurbs)
+        {
+            blurb.ChooseFood();
+        }
+    }
+
+    public void EatFood()
+    {
+        foreach (Blurb blurb in blurbs)
+        {
+            blurb.Eat();
+        }
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FoodSpawner : MonoBehaviour
 {
+    public static FoodSpawner Instance;
+
     [SerializeField] private GameObject foodPrefab;
     [SerializeField] private GameObject foodPairPrefab;
     [SerializeField] private GameObject foodParent;
@@ -17,11 +19,14 @@ public class FoodSpawner : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         SpawnFood();
     }
 
     private void SpawnFood()
     {
+        int indexName = 0;
+
         for (int j = 0; j < numberOfCircles; j++)
         {
             int pairCount = initialPairCount + (j * 6);
@@ -35,17 +40,49 @@ public class FoodSpawner : MonoBehaviour
 
                 FoodPair foodPair = Instantiate(foodPairPrefab, position, Quaternion.identity, foodParent.transform).GetComponent<FoodPair>();
 
+                foodPair.name = indexName.ToString();
+                indexName++;
+
                 Food food1 = Instantiate(foodPrefab, position, Quaternion.identity, foodPair.transform).GetComponent<Food>();
 
                 Vector3 pairOffset = Quaternion.Euler(0, 90, 0) * (position.normalized * distanceBetweenPairs);
                 Vector3 pairPosition = position + pairOffset;
                 Food food2 = Instantiate(foodPrefab, pairPosition, Quaternion.identity, foodPair.transform).GetComponent<Food>();
 
-               foodPair.food1 = food1;
+                foodPair.food1 = food1;
                 foodPair.food2 = food2;
 
                 foodPairs.Add(foodPair);
             }
         }
+    }
+
+    public FoodPair GetRandomFoodPair()
+    {
+        if (foodPairs.Count <= 0)
+        {
+            Debug.Log("There is no free food pairs");
+            return null;
+        }
+
+        int randomInex = Random.Range(0, foodPairs.Count);
+
+        FoodPair randomFoodPair = foodPairs[randomInex];
+
+        if (randomFoodPair.timesChosen < 2)
+        {
+            randomFoodPair.timesChosen++;
+
+            if (randomFoodPair.timesChosen >= 2)
+            {
+                Debug.Log("I take this food with another blurb");
+                foodPairs.Remove(randomFoodPair);
+            }
+
+            return randomFoodPair;
+        }
+
+        Debug.Log("Weird");
+        return null;
     }
 }

@@ -278,9 +278,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blurbPrefab: {fileID: 1074854800846178308, guid: 1a87d0ad65c1d8b49b2da3cc0f7fffd1, type: 3}
-  initialBlurbCount: 5
+  initialBlurbCount: 7
   yBlurbSpawnOffSet: -0.5
-  spawnRadius: 5
+  spawnRadius: 28.25
 --- !u!4 &817230226
 Transform:
   m_ObjectHideFlags: 0
@@ -472,10 +472,10 @@ MonoBehaviour:
   foodPrefab: {fileID: 204984766054974082, guid: 2ab93f2fac5c88e49bd22eefa2b5f834, type: 3}
   foodPairPrefab: {fileID: 7184916828873492541, guid: 7598205eaaf8db14ab9c0f6631cbca22, type: 3}
   foodParent: {fileID: 566442590}
-  initialPairCount: 6
+  initialPairCount: 3
   radius: 5
   distanceBetweenPairs: 1
-  numberOfCircles: 4
+  numberOfCircles: 1
   distanceBetweenCircles: 7
   foodPairs: []
 --- !u!1001 &2135247372
