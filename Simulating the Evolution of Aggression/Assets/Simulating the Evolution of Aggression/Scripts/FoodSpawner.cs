@@ -5,13 +5,15 @@ using UnityEngine;
 public class FoodSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject foodPrefab;
+    [SerializeField] private GameObject foodPairPrefab;
+    [SerializeField] private GameObject foodParent;
     [SerializeField] private int initialPairCount = 6;
     [SerializeField] private float radius = 5f;
     [SerializeField] private float distanceBetweenPairs = 1f;
     [SerializeField] private int numberOfCircles = 4;
     [SerializeField] private float distanceBetweenCircles = 7f;
 
-    public List<List<GameObject>> foodPairs = new List<List<GameObject>>();
+    public List<FoodPair> foodPairs = new List<FoodPair>();
 
     private void Awake()
     {
@@ -31,13 +33,18 @@ public class FoodSpawner : MonoBehaviour
                 float angle = angleStep * i;
                 Vector3 position = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad)) * currentRadius;
 
-                GameObject food1 = Instantiate(foodPrefab, position, Quaternion.identity);
+                FoodPair foodPair = Instantiate(foodPairPrefab, position, Quaternion.identity, foodParent.transform).GetComponent<FoodPair>();
+
+                Food food1 = Instantiate(foodPrefab, position, Quaternion.identity, foodPair.transform).GetComponent<Food>();
 
                 Vector3 pairOffset = Quaternion.Euler(0, 90, 0) * (position.normalized * distanceBetweenPairs);
                 Vector3 pairPosition = position + pairOffset;
-                GameObject food2 = Instantiate(foodPrefab, pairPosition, Quaternion.identity);
+                Food food2 = Instantiate(foodPrefab, pairPosition, Quaternion.identity, foodPair.transform).GetComponent<Food>();
 
-                foodPairs.Add(new List<GameObject>() { food1, food2 });
+               foodPair.food1 = food1;
+                foodPair.food2 = food2;
+
+                foodPairs.Add(foodPair);
             }
         }
     }
