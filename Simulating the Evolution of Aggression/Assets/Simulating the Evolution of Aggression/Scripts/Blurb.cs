@@ -11,9 +11,13 @@ public class Blurb : MonoBehaviour
     public float myFood = 0;
     public Transform targetFoodTrasform;
 
+    private GameManager gameManager;
+
     private void Awake()
     {
         targetFoodTrasform = transform;
+
+        gameManager = GameManager.Instance;
     }
 
     public void ChooseFood()
@@ -29,7 +33,9 @@ public class Blurb : MonoBehaviour
         {
             myFood = 2 / targetFoodPair.timesChosen;
             GetFoodPosition();
-            TeleportToFood();
+            StartCoroutine(MoveToFood());
+
+            BlurbsSpawner.Instance.blurbsCount += myFood - 1;
         }
 
         foodCounter.text = myFood.ToString();
@@ -45,6 +51,8 @@ public class Blurb : MonoBehaviour
 
         if (myFood == 2)
         {
+            targetFoodPair.blurb1 = this;
+            targetFoodPair.blurb2 = this;
             targetFoodTrasform = targetFoodPair.transform;
         }
         else if (targetFoodPair.blurb1 == null)
@@ -73,8 +81,40 @@ public class Blurb : MonoBehaviour
         }
     }
 
-    private void TeleportToFood()
+    private IEnumerator MoveToFood()
     {
+        if (targetFoodTrasform == null)
+            yield return null;
+
+        float elapsedTime = 0;
+
+        Vector3 startPosition = transform.position; 
+
+        while (elapsedTime < gameManager.simulationPeriod * 0.8f)
+        {
+            if (targetFoodTrasform == null)
+                yield return null;
+
+            Vector3 newPosition = Vector3.Lerp(startPosition, targetFoodTrasform.position, elapsedTime / (gameManager.simulationPeriod * 0.8f));
+
+            transform.position = newPosition;
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        if (targetFoodPair.blurb1 == this && targetFoodPair.blurb2 == this)
+        {
+            foodSpawner.foodPairs.Remove(targetFoodPair);
+            Destroy(targetFoodPair.gameObject);
+        }
+        if (targetFoodPair.blurb1 == this && targetFoodPair.food1 != null)
+            Destroy(targetFoodPair.food1.gameObject);
+        if (targetFoodPair.blurb2 == this && targetFoodPair.food2 != null)
+            Destroy(targetFoodPair.food2.gameObject);
+
         transform.position = targetFoodTrasform.position;
     }
+
 }

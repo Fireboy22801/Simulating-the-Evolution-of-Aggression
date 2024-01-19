@@ -278,9 +278,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blurbPrefab: {fileID: 1074854800846178308, guid: 1a87d0ad65c1d8b49b2da3cc0f7fffd1, type: 3}
-  initialBlurbCount: 1
   yBlurbSpawnOffSet: -0.5
   spawnRadius: 28.25
+  blurbsCount: 1
 --- !u!4 &817230226
 Transform:
   m_ObjectHideFlags: 0
@@ -424,6 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4cb0d6f424124143af9b3fe129530be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  simulationPeriod: 1
 --- !u!1 &1966154765
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,7 +473,7 @@ MonoBehaviour:
   foodPrefab: {fileID: 204984766054974082, guid: 2ab93f2fac5c88e49bd22eefa2b5f834, type: 3}
   foodPairPrefab: {fileID: 7184916828873492541, guid: 7598205eaaf8db14ab9c0f6631cbca22, type: 3}
   foodParent: {fileID: 566442590}
-  initialPairCount: 3
+  initialPairCount: 6
   radius: 5
   distanceBetweenFood: 1
   numberOfCircles: 4

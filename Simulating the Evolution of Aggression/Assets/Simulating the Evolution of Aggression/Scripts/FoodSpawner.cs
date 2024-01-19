@@ -23,8 +23,15 @@ public class FoodSpawner : MonoBehaviour
         SpawnFood();
     }
 
-    private void SpawnFood()
+    public void SpawnFood()
     {
+        foreach (var pair in foodPairs)
+        {
+            Destroy(pair.gameObject);
+        }
+
+        foodPairs.Clear();
+
         int indexName = 0;
 
         for (int j = 0; j < numberOfCircles; j++)
@@ -47,7 +54,6 @@ public class FoodSpawner : MonoBehaviour
                 indexName++;
 
                 Food food1 = Instantiate(foodPrefab, position, Quaternion.identity, foodPair.transform).GetComponent<Food>();
-
                 Food food2 = Instantiate(foodPrefab, pairPosition, Quaternion.identity, foodPair.transform).GetComponent<Food>();
 
                 foodPair.food1 = food1;
