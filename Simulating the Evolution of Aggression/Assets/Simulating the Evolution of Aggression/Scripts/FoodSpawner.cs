@@ -11,7 +11,7 @@ public class FoodSpawner : MonoBehaviour
     [SerializeField] private GameObject foodParent;
     [SerializeField] private int initialPairCount = 6;
     [SerializeField] private float radius = 5f;
-    [SerializeField] private float distanceBetweenPairs = 1f;
+    [SerializeField] private float distanceBetweenFood = 1f;
     [SerializeField] private int numberOfCircles = 4;
     [SerializeField] private float distanceBetweenCircles = 7f;
 
@@ -37,16 +37,17 @@ public class FoodSpawner : MonoBehaviour
             {
                 float angle = angleStep * i;
                 Vector3 position = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad)) * currentRadius;
+                Vector3 pairOffset = Quaternion.Euler(0, 90, 0) * (position.normalized * distanceBetweenFood);
+                Vector3 pairPosition = position + pairOffset;
 
-                FoodPair foodPair = Instantiate(foodPairPrefab, position, Quaternion.identity, foodParent.transform).GetComponent<FoodPair>();
+                Vector3 centerPosition = (position + pairPosition) / 2;
+                FoodPair foodPair = Instantiate(foodPairPrefab, centerPosition, Quaternion.identity, foodParent.transform).GetComponent<FoodPair>();
 
                 foodPair.name = indexName.ToString();
                 indexName++;
 
                 Food food1 = Instantiate(foodPrefab, position, Quaternion.identity, foodPair.transform).GetComponent<Food>();
 
-                Vector3 pairOffset = Quaternion.Euler(0, 90, 0) * (position.normalized * distanceBetweenPairs);
-                Vector3 pairPosition = position + pairOffset;
                 Food food2 = Instantiate(foodPrefab, pairPosition, Quaternion.identity, foodPair.transform).GetComponent<Food>();
 
                 foodPair.food1 = food1;
@@ -75,7 +76,6 @@ public class FoodSpawner : MonoBehaviour
 
             if (randomFoodPair.timesChosen >= 2)
             {
-                Debug.Log("I take this food with another blurb");
                 foodPairs.Remove(randomFoodPair);
             }
 
