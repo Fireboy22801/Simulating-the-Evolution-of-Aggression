@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     public float simulationPeriod = 3f;
 
-    private BlurbsSpawner blurbsSpawner;
+    private MobSpawner mobsSpawner;
     private FoodSpawner foodSpawner;
 
     private void Awake()
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        blurbsSpawner = BlurbsSpawner.Instance;
+        mobsSpawner = MobSpawner.Instance;
         foodSpawner = FoodSpawner.Instance;
 
         StartCoroutine(Simulation());
@@ -32,11 +32,11 @@ public class GameManager : MonoBehaviour
         {
             foodSpawner.SpawnFood();
 
-            blurbsSpawner.SpawnBlurbs();
-            blurbsSpawner.PlaceBlurbsInCircle();
+            mobsSpawner.SpawnMobs();
+            mobsSpawner.PlaceMobsInCircle();
 
-            blurbsSpawner.ChooseFood();
-            blurbsSpawner.EatFood();
+            mobsSpawner.ChooseFood();
+            mobsSpawner.EatFood();
 
             yield return new WaitForSeconds(simulationPeriod);
         }
